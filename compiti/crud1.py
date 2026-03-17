@@ -21,7 +21,6 @@ def carica():
         righe = file.read()
         righe = righe.split("\n")
         righe.pop(-1)   #rimuovo lo \n finale
-
         #chiudo il file
         file.close()
 
