@@ -1,4 +1,5 @@
-NOME_FILE = "./compiti/archivio.txt" 
+import json
+NOME_FILE = "./compiti/archivio.txt"
 film = []
 def stampaMenu():
     print("---------ARCHIVIO-FILM--------")
@@ -10,35 +11,23 @@ def stampaMenu():
     print("------------------------------")
     scelta = int(input("Inserisci la tua scelta: "))
     return scelta
- 
 def carica():
     try:
-        file = open(NOME_FILE, "r")
-        risultato = []
-        righe = file.read()
-        righe = righe.split("\n")
-        righe.pop(-1)
-        for r in righe:
-            info = r.split(";")
-            info = {"nome": info[0],
-                    "anno": info[1],
-                    "guadagni": info[2]}
-            risultato.append(info)
-        file.close()
-        return risultato
-
+        f = open(NOME_FILE, "r")
+        s = f.read()
+        l = json.loads(s)
+        f.close()
+        if s == "":
+            return []
+        return l
     except:
-        print("Impossibile caricare il file dell'archivio del film")
-        return []   
- 
- 
+        print("Errore nel caricamento del file")
+        return []
 def salva(l):
-    file = open(NOME_FILE, "w")
-    for f in l:
-        riga = f"{f['nome']};{f['anno']};{f['guadagni']}"
-        file.write(riga + "\n")
-    file.close()
- 
+    j = json.dumps(l)
+    f = open(NOME_FILE, "w")
+    f.write(j)
+    f.close()
 def aggiungi_film(l):
     corretto = False
     while not corretto:
@@ -104,7 +93,6 @@ def modifica_film(l):
                         corretto = True
             except:
                 print("Formato non valido")
- 
 def elimina_film(l):
     if len(l) == 0:
         print("Archivio vuoto, nessun film da modificare")
@@ -124,7 +112,6 @@ def elimina_film(l):
                     corretto = True
             except:
                 print("Formato non valido")
- 
 film = carica()
 esci = False
 while not esci:
@@ -143,3 +130,4 @@ while not esci:
         esci = True
     else:
         print("Scelta non valida")
+ 
